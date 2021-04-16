@@ -11,20 +11,16 @@ app.use(cors());
 // Get an instance of the express Router
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.send('Welcome nGRID Students!');
+});
+
 // Ping route for health checks - used in production env
 router.get('/ping', function (req, res) {
   res.status(200).json({
     'success': true,
     'message': 'Ok'
   });
-});
-
-router.get('/test', (req, res) => {
-  res.send('Hello test Students!');
-});
-
-router.get('/', (req, res) => {
-  res.send('Welcome!');
 });
 
 router.use('/user', userRouter);
