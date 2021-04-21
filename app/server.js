@@ -2,18 +2,12 @@ import express from 'express';
 import cors from 'cors';
 
 import { set_environment } from '../shared/env.js';
+import { responseHandler, errorHandler } from '../shared/handler.js';
 import userRouter from './user/router.js';
 
 const app = express();
 
 set_environment();
-
-const userResponse = function (req, res) {
-  res.status(200).json({
-    'success': true,
-    'data': res.data || 'Ok'
-  });
-};
 
 app.use(cors());
 
@@ -32,21 +26,13 @@ router.get('/ping', function (req, res) {
   });
 });
 
-router.use('/user', userRouter, userResponse);
+router.use('/user', userRouter);
+
+// custom response handler
+router.use(responseHandler);
 
 // error handler
-router.use(function (err, req, res, next) {
-  res.status(404).json({
-    'success': false,
-    'data': {
-      'error': [{
-        code: err.statusCode,
-        type: err.name,
-        description: err.message
-      }]
-    }
-  });
-});
+router.use(errorHandler);
 
 // Prefix for router
 app.use('/', router);
