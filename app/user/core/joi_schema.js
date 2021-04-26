@@ -6,7 +6,8 @@ export const createSchema = Joi.object({
   age: Joi.number(),
   first_name: Joi.string().pattern(new RegExp('^[a-zA-Z]')).min(3).max(30).required(),
   last_name: Joi.string().pattern(new RegExp('^[a-zA-Z]')).min(3).max(30).required(),
-  email: Joi.string().email().required()
+  email: Joi.string().email().required(),
+  user_id: Joi.string().required()
 });
 
 export const readSchema = Joi.object({
