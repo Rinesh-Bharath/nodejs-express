@@ -10,6 +10,7 @@ const app = express();
 set_environment();
 
 app.use(cors());
+app.use(express.json());
 
 // Get an instance of the express Router
 const router = express.Router();
