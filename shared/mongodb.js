@@ -35,6 +35,23 @@ export async function fetch_one_from_db (logging_key, collection_name = '', filt
   }
 };
 
+export async function insert_into_db (logging_key, collection_name = '', data = {}) {
+  try {
+    if (!connection) {
+      await get_mongodb_resource();
+    }
+    console.log(`${logging_key} - insert_into_db initializing ...`);
+    console.log(`${logging_key} - insert_into_db params -  ${JSON.stringify({ collection_name, data })}`);
+    const collection = await connection.db.collection(collection_name);
+    const result = await collection.insertOne(data);
+    console.log(logging_key + ' = insert_into_db query succeeded!');
+    return result && result.ops[0];
+  } catch (err) {
+    console.log(`Query error with MongoDB: ${err.message}`);
+    throw new Error(err.message);
+  }
+};
+
 // exports.fetch_from_db = async (logging_key, collection_name = '', filter = {}, project = {}, options = { limit: 0, skip: 0 }) => {
 //   try {
 //     if (!connection) {
@@ -68,22 +85,6 @@ export async function fetch_one_from_db (logging_key, collection_name = '', filt
 //       .aggregate(query).toArray();
 //     console.log(logging_key + ' = aggregate_from_db query succeeded');
 //     return resultset_array;
-//   } catch (error) {
-//     throw Error('Query error with MongoDB');
-//   }
-// };
-
-// exports.insert_into_db = async (logging_key, collection_name = '', data = {}) => {
-//   try {
-//     if (!connection) {
-//       await get_mongodb_resource();
-//     }
-//     console.log(logging_key + ' = insert_into_db initializing ...');
-//     console.log(logging_key + ' = insert_into_db params = ' + JSON.stringify({ collection_name, data }));
-//     const collection = await connection.db.collection(collection_name);
-//     const result = await collection.insertOne(data);
-//     console.log(logging_key + ' = insert_into_db query succeeded!');
-//     return result && result.ops[0];
 //   } catch (error) {
 //     throw Error('Query error with MongoDB');
 //   }
