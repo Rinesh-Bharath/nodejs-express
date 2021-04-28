@@ -52,6 +52,40 @@ export async function insert_into_db (logging_key, collection_name = '', data = 
   }
 };
 
+export async function remove_one_from_db (logging_key, collection_name = '', filter = {}) {
+  try {
+    if (!connection) {
+      await get_mongodb_resource();
+    }
+    console.log(`${logging_key} - remove_one_from_db initializing ...`);
+    console.log(`${logging_key} - remove_one_from_db params -  ${JSON.stringify({ collection_name, filter })}`);
+    const collection = await connection.db.collection(collection_name);
+    const result = await collection.deleteOne(filter);
+    console.log(`${logging_key} - remove_one_from_db query succeeded!`);
+    return result;
+  } catch (err) {
+    console.log(`Query error with MongoDB: ${err.message}`);
+    throw new Error(err.message);
+  }
+};
+
+export async function update_into_db (logging_key, collection_name = '', filter = {}, update = {}, options = { returnOriginal: false }) {
+  try {
+    if (!connection) {
+      await get_mongodb_resource();
+    }
+    console.log(`${logging_key} - update_into_db initializing ...`);
+    console.log(`${logging_key} - update_into_db params - ${JSON.stringify({ collection_name, filter, update, options })}`);
+    const collection = await connection.db.collection(collection_name);
+    const result = await collection.findOneAndUpdate(filter, update, options);
+    console.log(`${logging_key} - update_into_db query succeeded!`);
+    return result;
+  } catch (err) {
+    console.log(`Query error with MongoDB: ${err.message}`);
+    throw new Error(err.message);
+  }
+};
+
 // exports.fetch_from_db = async (logging_key, collection_name = '', filter = {}, project = {}, options = { limit: 0, skip: 0 }) => {
 //   try {
 //     if (!connection) {
@@ -106,22 +140,6 @@ export async function insert_into_db (logging_key, collection_name = '', data = 
 //   }
 // };
 
-// exports.update_into_db = async (logging_key, collection_name = '', filter = {}, update = {}, options = { returnOriginal: false }) => {
-//   try {
-//     if (!connection) {
-//       await get_mongodb_resource();
-//     }
-//     console.log(logging_key + ' = update_into_db initializing ...');
-//     console.log(logging_key + ' = update_into_db params = ' + JSON.stringify({ collection_name, filter, update, options }));
-//     const collection = await connection.db.collection(collection_name);
-//     const result = await collection.findOneAndUpdate(filter, update, options);
-//     console.log(logging_key + ' = update_into_db query succeeded!');
-//     return result;
-//   } catch (error) {
-//     throw Error('Query error with MongoDB');
-//   }
-// };
-
 // exports.update_many_into_db = async (logging_key, collection_name = '', filter = {}, update = {}, options = { multi: true, returnOriginal: false }) => {
 //   try {
 //     if (!connection) {
@@ -148,22 +166,6 @@ export async function insert_into_db (logging_key, collection_name = '', data = 
 //     const collection = await connection.db.collection(collection_name);
 //     const result = await collection.deleteMany(filter, options);
 //     console.log(logging_key + ' = delete_many_from_db query succeeded!');
-//     return result;
-//   } catch (error) {
-//     throw Error('Query error with MongoDB');
-//   }
-// };
-
-// exports.remove_from_db = async (logging_key, collection_name = '', filter = {}) => {
-//   try {
-//     if (!connection) {
-//       await get_mongodb_resource();
-//     }
-//     console.log(logging_key + ' = remove_from_db initializing ...');
-//     console.log(logging_key + ' = remove_from_db params = ' + JSON.stringify({ collection_name, filter }));
-//     const collection = await connection.db.collection(collection_name);
-//     const result = await collection.deleteMany(filter);
-//     console.log(logging_key + ' = remove_from_db query succeeded!');
 //     return result;
 //   } catch (error) {
 //     throw Error('Query error with MongoDB');

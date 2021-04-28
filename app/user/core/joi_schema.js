@@ -23,3 +23,7 @@ export const updateSchema = Joi.object({
   email: Joi.string().email(),
   user_id: Joi.string().required()
 });
+
+export const deleteSchema = Joi.object({
+  user_id: Joi.string().required()
+});
