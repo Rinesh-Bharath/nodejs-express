@@ -86,26 +86,27 @@ export async function update_into_db (logging_key, collection_name = '', filter 
   }
 };
 
-// exports.fetch_from_db = async (logging_key, collection_name = '', filter = {}, project = {}, options = { limit: 0, skip: 0 }) => {
-//   try {
-//     if (!connection) {
-//       await get_mongodb_resource();
-//     }
-//     console.log(logging_key + ' = fetch_from_db initializing ...');
-//     console.log(logging_key + ' = fetch_from_db params = ' + JSON.stringify({ collection_name, filter, project, options }));
-//     const collection = await connection.db.collection(collection_name);
-//     const resultset_array = await collection
-//       .find(filter)
-//       .project(project)
-//       .limit(options.limit)
-//       .skip(options.skip)
-//       .toArray();
-//     console.log(logging_key + ' = fetch_from_db query succeeded');
-//     return resultset_array;
-//   } catch (error) {
-//     throw Error('Query error with MongoDB');
-//   }
-// };
+export async function fetch_from_db (logging_key, collection_name = '', filter = {}, project = {}, options = { limit: 0, skip: 0 }) {
+  try {
+    if (!connection) {
+      await get_mongodb_resource();
+    }
+    console.log(`${logging_key} - fetch_from_db initializing ...`);
+    console.log(`${logging_key} - fetch_from_db params - ${JSON.stringify({ collection_name, filter, project, options })}`);
+    const collection = await connection.db.collection(collection_name);
+    const result = await collection
+      .find(filter)
+      .project()
+      .limit(options.limit)
+      .skip(options.skip)
+      .toArray();
+    console.log(`${logging_key} - fetch_from_db query succeeded`);
+    return result;
+  } catch (err) {
+    console.log(`Query error with MongoDB: ${err.message}`);
+    throw new Error(err.message);
+  }
+};
 
 // exports.aggregate_from_db = async (logging_key, collection_name = '', query = [], project = {}, options = { limit: 0, skip: 0 }) => {
 //   try {

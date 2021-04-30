@@ -9,6 +9,7 @@ userRouter.post('/create', userCore.create);
 userRouter.get('/read', userCore.read);
 userRouter.put('/update', userCore.update);
 userRouter.delete('/delete', userCore.remove);
+userRouter.post('/search', userCore.search);
 
 // User Address Services
 userRouter.post('/address/create', userAddress.create);

@@ -27,3 +27,12 @@ export const updateSchema = Joi.object({
 export const deleteSchema = Joi.object({
   user_id: Joi.string().required()
 });
+
+export const searchSchema = Joi.object({
+  display_name: Joi.string().alphanum().min(3).max(30),
+  age: Joi.number(),
+  first_name: Joi.string().pattern(new RegExp('^[a-zA-Z]')).min(3).max(30),
+  last_name: Joi.string().pattern(new RegExp('^[a-zA-Z]')).min(3).max(30),
+  email: Joi.string().email(),
+  user_id: Joi.string()
+});
