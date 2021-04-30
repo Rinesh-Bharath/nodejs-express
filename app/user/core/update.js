@@ -1,6 +1,6 @@
 import { update_into_db } from '../../../shared/mongodb.js';
 import { updateSchema } from './joi_schema.js';
-import { validate_user_id_exists } from './validate.js';
+import { validate_user_id_exists, validate_email_exists } from './validate.js';
 
 const logging_key = 'update a user';
 
@@ -21,6 +21,11 @@ export async function update (req, res, next) {
 
     if (DATA.display_name) {
       updateData.display_name = DATA.display_name;
+    }
+
+    if (DATA.email) {
+      await validate_email_exists(logging_key, DATA.email);
+      updateData.email = DATA.email;
     }
 
     const filter = {
