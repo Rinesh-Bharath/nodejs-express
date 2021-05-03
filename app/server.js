@@ -3,7 +3,9 @@ import cors from 'cors';
 
 import { set_environment } from '../shared/env.js';
 import { responseHandler, errorHandler } from '../shared/handler.js';
+import devopsRouter from './devops/router.js';
 import userRouter from './user/router.js';
+import productRouter from './product/router.js';
 
 const app = express();
 
@@ -27,7 +29,11 @@ router.get('/ping', function (req, res) {
   });
 });
 
+router.use('/devops', devopsRouter);
+
 router.use('/user', userRouter);
+
+router.use('/product', productRouter);
 
 // custom response handler
 router.use(responseHandler);
