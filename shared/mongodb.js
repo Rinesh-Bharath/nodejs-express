@@ -18,6 +18,41 @@ const get_mongodb_resource = async () => {
   }
 };
 
+export async function create_a_collection (logging_key, collection_name = '', options = { }) {
+  try {
+    if (!connection) {
+      await get_mongodb_resource();
+    }
+    console.log(`${logging_key} - create_collection initializing`);
+    console.log(`${logging_key} - create_collection params - ${JSON.stringify({ collection_name, options })}`);
+    const collection = await connection.db.createCollection(collection_name, options);
+    console.log(`${logging_key} - create_collection query succeeded`);
+    return collection;
+  } catch (err) {
+    console.log(`Query error with MongoDB: ${err.message}`);
+    throw new Error(err.message);
+  }
+};
+
+export async function create_indexes (logging_key, COLLECTION_INDEXES = []) {
+  try {
+    if (!connection) {
+      await get_mongodb_resource();
+    }
+    console.log(`${logging_key} - create_indexes initializing`);
+    for (const COLLECTION_INDEX of COLLECTION_INDEXES) {
+      console.log(`${logging_key} - create_indexes params - ${JSON.stringify(COLLECTION_INDEX)}`);
+      const collection = await connection.db.collection(COLLECTION_INDEX.name);
+      await collection.createIndexes(COLLECTION_INDEX.index);
+    }
+    console.log(`${logging_key} - create_indexes query succeeded`);
+    return;
+  } catch (err) {
+    console.log(`Query error with MongoDB: ${err.message}`);
+    throw new Error(err.message);
+  }
+};
+
 export async function fetch_one_from_db (logging_key, collection_name = '', filter = {}, project = {}, options = { limit: 0, skip: 0 }) {
   try {
     if (!connection) {
@@ -96,7 +131,7 @@ export async function fetch_from_db (logging_key, collection_name = '', filter =
     const collection = await connection.db.collection(collection_name);
     const result = await collection
       .find(filter)
-      .project()
+      .project(project)
       .limit(options.limit)
       .skip(options.skip)
       .toArray();
@@ -108,22 +143,22 @@ export async function fetch_from_db (logging_key, collection_name = '', filter =
   }
 };
 
-// exports.aggregate_from_db = async (logging_key, collection_name = '', query = [], project = {}, options = { limit: 0, skip: 0 }) => {
-//   try {
-//     if (!connection) {
-//       await get_mongodb_resource();
-//     }
-//     console.log(logging_key + ' = aggregate_from_db initializing ...');
-//     console.log(logging_key + ' = aggregate_from_db params = ' + JSON.stringify({ collection_name, query, project, options }));
-//     const collection = await connection.db.collection(collection_name);
-//     const resultset_array = await collection
-//       .aggregate(query).toArray();
-//     console.log(logging_key + ' = aggregate_from_db query succeeded');
-//     return resultset_array;
-//   } catch (error) {
-//     throw Error('Query error with MongoDB');
-//   }
-// };
+export async function aggregate_from_db (logging_key, collection_name = '', query = [], project = {}, options = { limit: 0, skip: 0 }) {
+  try {
+    if (!connection) {
+      await get_mongodb_resource();
+    }
+    console.log(`${logging_key} - aggregate_from_db initializing ...`);
+    console.log(`${logging_key} - aggregate_from_db params - ${JSON.stringify({ collection_name, query, project, options })}`);
+    const collection = await connection.db.collection(collection_name);
+    const result = await collection.aggregate(query).toArray();
+    console.log(`${logging_key} - aggregate_from_db query succeeded`);
+    return result;
+  } catch (err) {
+    console.log(`Query error with MongoDB: ${err.message}`);
+    throw new Error(err.message);
+  }
+};
 
 // exports.insert_many_into_db = async (logging_key, collection_name = '', data = []) => {
 //   try {
