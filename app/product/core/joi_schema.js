@@ -32,5 +32,6 @@ export const searchSchema = Joi.object({
   product_id: Joi.string(),
   name: Joi.string().min(3).max(30),
   price: Joi.number(),
-  color: Joi.string()
+  color: Joi.string(),
+  status: Joi.string()
 });
