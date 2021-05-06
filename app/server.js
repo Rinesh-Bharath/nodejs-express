@@ -3,6 +3,7 @@ import cors from 'cors';
 
 import { set_environment } from '../shared/env.js';
 import { responseHandler, errorHandler } from '../shared/handler.js';
+import authRouter from './authentication/router.js';
 import devopsRouter from './devops/router.js';
 import userRouter from './user/router.js';
 import productRouter from './product/router.js';
@@ -28,6 +29,8 @@ router.get('/ping', function (req, res) {
     'message': 'Ok'
   });
 });
+
+router.use('/auth', authRouter);
 
 router.use('/devops', devopsRouter);
 
