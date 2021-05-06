@@ -1,5 +1,3 @@
-
-import { create_jwt_token } from '../../shared/helper.js';
 import pkg from 'jsonwebtoken';
 const jwt = pkg;
 
@@ -17,6 +15,7 @@ export async function access_token (req, res, next) {
     const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES });
     const accessToken = {
       expiresIn: process.env.JWT_EXPIRES,
+      type: process.env.JWT_TYPE,
       token
     };
     console.log(`${logging_key} - Access Detail - ${JSON.stringify(accessToken)}`);
