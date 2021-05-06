@@ -1,6 +1,6 @@
 import { loginSchema } from './joi_schema.js';
-import { fetch_one_from_db } from '../../../shared/mongodb.js';
-import { verify_password } from '../../../shared/helper.js';
+import { fetch_one_from_db } from '../../shared/mongodb.js';
+import { verify_password } from '../../shared/helper.js';
 
 const logging_key = 'login a user';
 
