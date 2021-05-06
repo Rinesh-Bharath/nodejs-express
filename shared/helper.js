@@ -8,3 +8,7 @@ export async function encrypt_password (password) {
   const hash = await bcrypt.hash(password, salt);
   return hash;
 }
+
+export async function verify_password (password, hash) {
+  return bcrypt.compare(password, hash);
+}
