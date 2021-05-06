@@ -10,11 +10,10 @@ export async function search (req, res, next) {
     const limit = parseInt(req.query.limit);
     const skip = parseInt(req.query.skip);
 
-    const project_keys = Object.keys(DATA);
-    const project = {};
-    project_keys.map(data => {
-      project[data] = 1;
-    });
+    const project = {
+      _id: 0,
+      password: 0
+    };
     const USER = await fetch_from_db(logging_key, process.env.TABLE_USER, DATA, project, { limit, skip });
     console.log(`${logging_key} - User Detail - ${JSON.stringify(USER)}`);
     res.data = USER || [];
