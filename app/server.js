@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-
 import { set_environment } from '../shared/env.js';
 import { responseHandler, errorHandler } from '../shared/handler.js';
+import { verify_token } from './access.js';
 import authRouter from './authentication/router.js';
 import devopsRouter from './devops/router.js';
 import userRouter from './user/router.js';
@@ -32,11 +32,11 @@ router.get('/ping', function (req, res) {
 
 router.use('/auth', authRouter);
 
-router.use('/devops', devopsRouter);
+router.use('/devops', verify_token, devopsRouter);
 
-router.use('/user', userRouter);
+router.use('/user', verify_token, userRouter);
 
-router.use('/product', productRouter);
+router.use('/product', verify_token, productRouter);
 
 // custom response handler
 router.use(responseHandler);
