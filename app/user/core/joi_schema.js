@@ -7,7 +7,8 @@ export const createSchema = Joi.object({
   first_name: Joi.string().pattern(new RegExp('^[a-zA-Z]')).min(3).max(30).required(),
   last_name: Joi.string().pattern(new RegExp('^[a-zA-Z]')).min(3).max(30).required(),
   email: Joi.string().email().required(),
-  user_id: Joi.string().required()
+  user_id: Joi.string().required(),
+  password: Joi.string().alphanum().min(6).max(10).required()
 });
 
 export const readSchema = Joi.object({
@@ -21,7 +22,8 @@ export const updateSchema = Joi.object({
   first_name: Joi.string().pattern(new RegExp('^[a-zA-Z]')).min(3).max(30),
   last_name: Joi.string().pattern(new RegExp('^[a-zA-Z]')).min(3).max(30),
   email: Joi.string().email(),
-  user_id: Joi.string().required()
+  user_id: Joi.string().required(),
+  password: Joi.string().alphanum().min(6).max(10)
 });
 
 export const deleteSchema = Joi.object({

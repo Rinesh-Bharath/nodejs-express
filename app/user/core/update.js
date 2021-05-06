@@ -1,6 +1,7 @@
 import { update_into_db } from '../../../shared/mongodb.js';
 import { updateSchema } from './joi_schema.js';
 import { validate_user_id_exists, validate_email_exists } from './validate.js';
+import { encrypt_password } from '../../../shared/helper.js';
 
 const logging_key = 'update a user';
 
@@ -26,6 +27,10 @@ export async function update (req, res, next) {
     if (DATA.email) {
       await validate_email_exists(logging_key, DATA.email);
       updateData.email = DATA.email;
+    }
+
+    if (DATA.password) {
+      updateData.password = await encrypt_password(DATA.password);
     }
 
     const filter = {
