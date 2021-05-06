@@ -61,7 +61,7 @@ export async function fetch_one_from_db (logging_key, collection_name = '', filt
     console.log(`${logging_key} - fetch_one_from_db initializing`);
     console.log(`${logging_key} - fetch_one_from_db params - ${JSON.stringify({ collection_name, filter, project, options })}`);
     const collection = await connection.db.collection(collection_name);
-    const result = await collection.findOne(filter);
+    const result = await collection.findOne(filter, project);
     console.log(`${logging_key} - fetch_one_from_db query succeeded`);
     return result;
   } catch (err) {
