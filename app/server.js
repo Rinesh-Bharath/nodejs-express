@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { set_environment } from '../shared/env.js';
 import { responseHandler, errorHandler } from '../shared/handler.js';
-import { verify_token } from './access.js';
+import { verify_token } from './verify_token.js';
 import authRouter from './authentication/router.js';
 import devopsRouter from './devops/router.js';
 import userRouter from './user/router.js';
