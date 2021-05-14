@@ -12,10 +12,10 @@ export async function access_token (req, res, next) {
       email: res.data.email
     };
 
-    const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES });
+    const token = jwt.sign(data, process.env.JWT_ACCESS_SECRET, { expiresIn: process.env.JWT_ACCESS_EXPIRES });
     const accessToken = {
-      expiresIn: process.env.JWT_EXPIRES,
-      type: process.env.JWT_TYPE,
+      expiresIn: process.env.JWT_ACCESS_EXPIRES,
+      type: process.env.JWT_ACCESS_TYPE,
       token
     };
     console.log(`${logging_key} - Access Detail - ${JSON.stringify(accessToken)}`);
