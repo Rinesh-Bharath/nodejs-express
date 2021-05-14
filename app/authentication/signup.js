@@ -1,29 +1,19 @@
-import { loginSchema } from './joi_schema.js';
-import { fetch_one_from_db } from '../../shared/mongodb.js';
-import { verify_password } from '../../shared/helper.js';
+import { v4 as uuid } from 'uuid';
+import { insert_into_db } from '../../shared/mongodb.js';
+import { createSchema } from '../user/core/joi_schema.js';
+import { validate_email_exists } from '../user/core/validate.js';
+import { encrypt_password } from '../../shared/helper.js';
 
 const logging_key = 'signup a user';
 
 export async function signup (req, res, next) {
   console.log(`${logging_key} - started - ${JSON.stringify(req.body)}`);
   try {
-    const inputData = await loginSchema.validateAsync(req.body);
-
-    const filter = {
-      email: inputData.email
-    };
-    const project = {
-      password: 1,
-    };
-
-    const USER = await fetch_one_from_db(logging_key, process.env.TABLE_USER, filter, project);
-    if (!USER) {
-      throw new Error('Invalid email id');
-    }
-    if (!await verify_password(inputData.password, USER.password)) {
-      throw new Error('Invalid password');
-    }
-
+    req.body.user_id = uuid();
+    const DATA = await createSchema.validateAsync(req.body);
+    await validate_email_exists(logging_key, DATA.email);
+    DATA.password = await encrypt_password(DATA.password);
+    const USER = await insert_into_db(logging_key, process.env.TABLE_USER, DATA);
     console.log(`${logging_key} - User Detail - ${JSON.stringify(USER)}`);
     res.data = USER;
     next();
