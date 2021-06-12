@@ -11,4 +11,4 @@
 
 Hi. This project is dedicated for development purpose only and not gonna hit the production anytime.
 
-Still if you find any security issues, please create a security_flaw.md file and describe your findings.
+Still if you find any security issues, please create a issue and describe your findings.
