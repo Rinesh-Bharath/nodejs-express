@@ -6,6 +6,7 @@ const productRouter = express.Router();
 // Product Core Services
 productRouter.post('/create', productCore.create);
 productRouter.post('/create_promise', productCore.create_promise);
+productRouter.post('/create_many', productCore.create_many);
 productRouter.get('/read', productCore.read);
 productRouter.put('/update', productCore.update);
 productRouter.delete('/delete', productCore.remove);
