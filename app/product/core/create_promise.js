@@ -14,9 +14,11 @@ export async function create_promise (req, res, next) {
     if (isEmpty(PRODUCT_LIST)) {
       throw new Error('PRODUCT_LIST cannot be empty');
     }
+    console.time('promise');
     const PRODUCTS = await Promise.all(PRODUCT_LIST.map(
       async (product) => process_product(logging_key, product)
     ));
+    console.timeEnd('promise');
     console.log(`${logging_key} - Products Added - ${JSON.stringify(PRODUCTS)}`);
     res.data = PRODUCTS;
     next();
