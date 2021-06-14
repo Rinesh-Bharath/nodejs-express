@@ -1,7 +1,9 @@
-import { isEmpty } from 'lodash';
+import pkg from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { insert_into_db } from '../../../shared/mongodb.js';
 import { createSchema } from './joi_schema.js';
+
+const { isEmpty } = pkg;
 
 const logging_key = 'create products';
 
