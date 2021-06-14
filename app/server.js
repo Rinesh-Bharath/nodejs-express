@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { set_environment } from '../shared/env.js';
+import dotenv from 'dotenv';
 import { responseHandler, errorHandler } from '../shared/handler.js';
 import { verify_token } from './authentication/verify_token.js';
 import authRouter from './authentication/router.js';
@@ -9,17 +9,22 @@ import userRouter from './user/router.js';
 import productRouter from './product/router.js';
 
 const app = express();
-
-set_environment();
-
 app.use(cors());
 app.use(express.json());
+
+// Configure env variables
+dotenv.config();
 
 // Get an instance of the express Router
 const router = express.Router();
 
 router.get('/', (req, res) => {
   res.send('Welcome nGRID Students!');
+});
+
+router.get('/env', (req, res) => {
+  console.log(process.env);
+  res.send('Environment Variables are consoled!');
 });
 
 // Ping route for health checks - used in production env
