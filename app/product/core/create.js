@@ -10,6 +10,12 @@ export async function create (req, res, next) {
   const PRODUCTS = [];
   try {
     console.time('for');
+
+    // Prevents DoS.
+    if (!(PRODUCT_LIST instanceof Array)) {
+      return [];
+    }
+
     for (let i = 0; i < PRODUCT_LIST.length; i++) {
       const productToValidate = PRODUCT_LIST[i];
       const inputData = await createSchema.validateAsync(productToValidate);
