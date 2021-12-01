@@ -27,7 +27,7 @@ router.get('/env', (req, res) => {
   res.send('Environment Variables are consoled!');
 });
 
-// Ping route for health checks - used in production env
+// Ping route for health check - used in production env
 router.get('/ping', function (req, res) {
   res.status(200).json({
     'success': true,
